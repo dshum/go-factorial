@@ -1,17 +1,38 @@
 package factorial
 
-import "testing"
+import (
+	"math/big"
+	"testing"
+)
 
 func TestGetFactorial(t *testing.T) {
-	zeroResult := GetFactorial(0)
+	expectedInvalidArgResult := 1
+	invalidArgResult := GetFactorial(0)
 
-	if zeroResult != 1 {
-		t.Errorf("GetFactorial(\"0\") failed; expected %d, got %d", 1, zeroResult)
+	if invalidArgResult != expectedInvalidArgResult {
+		t.Errorf("GetFactorial(\"0\") failed; expected %d, got %d", expectedInvalidArgResult, invalidArgResult)
 	}
 
+	expectedResult := 120
 	result := GetFactorial(5)
 
-	if result != 120 {
-		t.Errorf("GetFactorial(\"5\") failed; expected %d, got %d", 120, result)
+	if result != expectedResult {
+		t.Errorf("GetFactorial(\"5\") failed; expected %d, got %d", expectedResult, result)
+	}
+}
+
+func TestGetBigFactorial(t *testing.T) {
+	expectedInvalidArgResult := big.NewInt(int64(1))
+	invalidArgResult := GetBigFactorial(-10)
+
+	if expectedInvalidArgResult.Cmp(invalidArgResult) != 0 {
+		t.Errorf("GetFactorial(\"-10\") failed; expected %d, got %d", expectedInvalidArgResult, invalidArgResult)
+	}
+
+	var expectedResult, _ = new(big.Int).SetString("30414093201713378043612608166064768844377641568960512000000000000", 10)
+	result := GetBigFactorial(50)
+
+	if expectedResult.Cmp(result) != 0 {
+		t.Errorf("GetFactorial(\"50\") failed; expected %v, got %v", expectedResult, result)
 	}
 }
